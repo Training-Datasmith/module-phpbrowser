@@ -181,7 +181,7 @@ class Guzzle extends AbstractBrowser
         return Uri::mergeUrls((string)$baseUri, $uri);
     }
 
-    protected function doRequest(object $request)
+    protected function doRequest(object $request): object
     {
         /** @var BrowserKitRequest $request **/
         $guzzleRequest = new Psr7Request(
