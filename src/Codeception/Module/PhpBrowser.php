@@ -112,7 +112,7 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
         'expect',
         'version',
         'timeout',
-        'connect_timeout'
+        'connect_timeout',
     ];
 
     public ?AbstractBrowser $client = null;
@@ -171,9 +171,9 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
     public function amOnSubdomain(string $subdomain): void
     {
         $url = $this->config['url'];
-        $url = preg_replace('#(https?://)(.*\.)(.*\.)#', "$1$3", (string) $url); // removing current subdomain
+        $url = preg_replace('#(https?://)(.*\.)(.*\.)#', '$1$3', (string) $url); // removing current subdomain
         $url = preg_replace('#(https?://)(.*)#', sprintf('$1%s.$2', $subdomain), $url);
-         // inserting new
+        // inserting new
         $config = $this->config;
         $config['url'] = $url;
         $this->_reconfigure($config);

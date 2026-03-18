@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 class index
 {
-    function GET($matches)
+    public function GET($matches)
     {
         include __DIR__ . '/view/index.php';
     }
 
-    function POST($matches)
+    public function POST($matches)
     {
         include __DIR__ . '/view/index.php';
     }
@@ -15,10 +17,10 @@ class index
 
 class info
 {
-    function GET()
+    public function GET()
     {
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            data::set('ajax', array('GET'));
+            data::set('ajax', ['GET']);
         }
         data::set('params', $_GET);
         include __DIR__ . '/view/info.php';
@@ -27,7 +29,7 @@ class info
 
 class redirect
 {
-    function GET()
+    public function GET()
     {
         header('Location: /info');
     }
@@ -35,7 +37,7 @@ class redirect
 
 class redirect4
 {
-    function GET()
+    public function GET()
     {
         header('Location: /search?ln=test@gmail.com&sn=testnumber');
     }
@@ -43,7 +45,7 @@ class redirect4
 
 class redirect_relative
 {
-    function GET()
+    public function GET()
     {
         header('Location: info');
     }
@@ -51,7 +53,7 @@ class redirect_relative
 
 class redirect2
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/redirect2.php';
     }
@@ -59,7 +61,7 @@ class redirect2
 
 class redirect3
 {
-    function GET()
+    public function GET()
     {
         header('Refresh:0;url=/info');
     }
@@ -67,7 +69,7 @@ class redirect3
 
 class redirect_twice
 {
-    function GET()
+    public function GET()
     {
         header('Location: /redirect3');
     }
@@ -75,7 +77,7 @@ class redirect_twice
 
 class redirect_params
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/redirect_params.php';
     }
@@ -83,7 +85,7 @@ class redirect_params
 
 class redirect_interval
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/redirect_interval.php';
     }
@@ -91,7 +93,7 @@ class redirect_interval
 
 class redirect_meta_refresh
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/redirect_meta_refresh.php';
     }
@@ -99,7 +101,7 @@ class redirect_meta_refresh
 
 class redirect_header_interval
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/index.php';
         header('Refresh:1800;url=/info');
@@ -108,7 +110,7 @@ class redirect_header_interval
 
 class redirect_base_uri_has_path
 {
-    function GET()
+    public function GET()
     {
         header('Refresh:0;url=/somepath/info');
     }
@@ -116,7 +118,7 @@ class redirect_base_uri_has_path
 
 class redirect_base_uri_has_path_302
 {
-    function GET()
+    public function GET()
     {
         header('Location: /somepath/info', true, 302);
     }
@@ -124,7 +126,7 @@ class redirect_base_uri_has_path_302
 
 class location_201
 {
-    function GET()
+    public function GET()
     {
         header('Location: /info', true, 201);
     }
@@ -132,21 +134,20 @@ class location_201
 
 class external_url
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/external_url.php';
     }
 }
 
-
 class login
 {
-    function GET($matches)
+    public function GET($matches)
     {
         include __DIR__ . '/view/login.php';
     }
 
-    function POST()
+    public function POST()
     {
         data::set('form', $_POST);
         include __DIR__ . '/view/login.php';
@@ -155,7 +156,7 @@ class login
 
 class cookies
 {
-    function GET($matches)
+    public function GET($matches)
     {
         if (isset($_COOKIE['foo']) && $_COOKIE['foo'] === 'bar1') {
             if (isset($_COOKIE['baz']) && $_COOKIE['baz'] === 'bar2') {
@@ -166,7 +167,7 @@ class cookies
         }
     }
 
-    function POST()
+    public function POST()
     {
         setcookie('f', 'b', time() + 60, null, null, false, true);
         setcookie('foo', 'bar1', time() + 60, null, 'sub.localhost', false, true);
@@ -180,8 +181,8 @@ class cookiesHeader
 {
     public function GET()
     {
-        header("Set-Cookie: a=b;Path=/;");
-        header("Set-Cookie: c=d;Path=/;", false);
+        header('Set-Cookie: a=b;Path=/;');
+        header('Set-Cookie: c=d;Path=/;', false);
         include __DIR__ . '/view/index.php';
     }
 }
@@ -196,7 +197,7 @@ class iframe
 
 class form
 {
-    function GET($matches)
+    public function GET($matches)
     {
         data::set('query', $_GET);
         $url = strtolower($matches[1]);
@@ -206,7 +207,7 @@ class form
         include __DIR__ . '/view/form/' . $url . '.php';
     }
 
-    function POST()
+    public function POST()
     {
         data::set('query', $_GET);
         data::set('form', $_POST);
@@ -222,18 +223,18 @@ class form
 
 class articles
 {
-    function DELETE()
+    public function DELETE()
     {
     }
 
-    function PUT()
+    public function PUT()
     {
     }
 }
 
 class search
 {
-    function GET($matches)
+    public function GET($matches)
     {
         $result = null;
         if (isset($_GET['searchQuery']) && $_GET['searchQuery'] == 'test') {
@@ -246,7 +247,7 @@ class search
 
 class httpAuth
 {
-    function GET()
+    public function GET()
     {
         if (!isset($_SERVER['PHP_AUTH_USER'])) {
             header('WWW-Authenticate: Basic realm="test"');
@@ -255,21 +256,21 @@ class httpAuth
             return;
         }
         if ($_SERVER['PHP_AUTH_PW'] == 'password') {
-            echo "Welcome, " . $_SERVER['PHP_AUTH_USER'];
+            echo 'Welcome, ' . $_SERVER['PHP_AUTH_USER'];
             return;
         }
-        echo "Forbidden";
+        echo 'Forbidden';
     }
 }
 
 class register
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/register.php';
     }
 
-    function POST()
+    public function POST()
     {
         $this->GET();
     }
@@ -277,7 +278,7 @@ class register
 
 class contentType1
 {
-    function GET()
+    public function GET()
     {
         header('Content-Type:', true);
         include __DIR__ . '/view/content_type.php';
@@ -286,7 +287,7 @@ class contentType1
 
 class contentType2
 {
-    function GET()
+    public function GET()
     {
         header('Content-Type:', true);
         include __DIR__ . '/view/content_type2.php';
@@ -295,7 +296,7 @@ class contentType2
 
 class unsetCookie
 {
-    function GET()
+    public function GET()
     {
         header('Set-Cookie: a=; Expires=Thu, 01 Jan 1970 00:00:01 GMT');
     }
@@ -303,7 +304,7 @@ class unsetCookie
 
 class basehref
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/basehref.php';
     }
@@ -311,7 +312,7 @@ class basehref
 
 class jserroronload
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/jserroronload.php';
     }
@@ -319,14 +320,14 @@ class jserroronload
 
 class userAgent
 {
-    function GET()
+    public function GET()
     {
         echo $_SERVER['HTTP_USER_AGENT'];
     }
 }
 class minimal
 {
-    function GET()
+    public function GET()
     {
         include __DIR__ . '/view/minimal.php';
     }

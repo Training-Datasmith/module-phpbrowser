@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class data
 {
     public static $filename = '/db';
@@ -26,15 +28,15 @@ class data
 
     public static function clean()
     {
-        self::save(array());
+        self::save([]);
     }
 
     protected static function load()
     {
         $data = file_get_contents(__DIR__ . self::$filename);
-        $data = $data ? unserialize($data) : $data = array();
+        $data = $data ? unserialize($data) : $data = [];
         if (!is_array($data)) {
-            $data = array();
+            $data = [];
         }
         return $data;
     }

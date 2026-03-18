@@ -1,33 +1,35 @@
 <?php
 
-    /**
-     * glue
-     *
-     * Provides an easy way to map URLs to classes. URLs can be literal
-     * strings or regular expressions.
-     *
-     * When the URLs are processed:
-     *      * delimiter (/) are automatically escaped: (\/)
-     *      * The beginning and end are anchored (^ $)
-     *      * An optional end slash is added (/?)
-     *      * The i option is added for case-insensitive searches
-     *
-     * Example:
-     *
-     * $urls = array(
-     *     '/' => 'index',
-     *     '/page/(\d+) => 'page'
-     * );
-     *
-     * class page {
-     *      function GET($matches) {
-     *          echo "Your requested page " . $matches[1];
-     *      }
-     * }
-     *
-     * glue::stick($urls);
-     *
-     */
+declare(strict_types=1);
+
+/**
+ * glue
+ *
+ * Provides an easy way to map URLs to classes. URLs can be literal
+ * strings or regular expressions.
+ *
+ * When the URLs are processed:
+ *      * delimiter (/) are automatically escaped: (\/)
+ *      * The beginning and end are anchored (^ $)
+ *      * An optional end slash is added (/?)
+ *      * The i option is added for case-insensitive searches
+ *
+ * Example:
+ *
+ * $urls = array(
+ *     '/' => 'index',
+ *     '/page/(\d+) => 'page'
+ * );
+ *
+ * class page {
+ *      function GET($matches) {
+ *          echo "Your requested page " . $matches[1];
+ *      }
+ * }
+ *
+ * glue::stick($urls);
+ *
+ */
 class glue
 {
     /**
@@ -41,7 +43,7 @@ class glue
      * @throws  BadMethodCallException  Thrown if a corresponding GET,POST is not found
      *
      */
-    static function stick($urls)
+    public static function stick($urls)
     {
 
         $method = strtoupper($_SERVER['REQUEST_METHOD']);

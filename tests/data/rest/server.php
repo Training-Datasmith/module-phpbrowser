@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function RESTServer()
 {
     // find the function/method to call
@@ -10,13 +12,12 @@ function RESTServer()
         }
     }
 
-
     if ($callback) {
-// get the request data
+        // get the request data
         $data = null;
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $data = $_GET;
-        } else if ($tmp = file_get_contents('php://input')) {
+        } elseif ($tmp = file_get_contents('php://input')) {
             $data = json_decode($tmp);
         }
 

@@ -87,7 +87,7 @@ final class PhpBrowserTest extends TestsForBrowsers
     public function testHtmlSnapshot(): void
     {
         $this->module->amOnPage('/');
-        $testName = "debugPhpBrowser";
+        $testName = 'debugPhpBrowser';
         $this->module->makeHtmlSnapshot($testName);
         $this->assertFileExists(CodeceptConfig::outputDir() . 'debug/' . $testName . '.html');
         @unlink(CodeceptConfig::outputDir() . 'debug/' . $testName . '.html');
@@ -307,8 +307,8 @@ final class PhpBrowserTest extends TestsForBrowsers
         $this->module->_reconfigure([
             'handler' => new MockHandler([
                 new Response(302, ['Location' => '//example.org/']),
-                new Response(200, [], 'Cool stuff')
-            ])
+                new Response(200, [], 'Cool stuff'),
+            ]),
         ]);
         $this->module->amOnUrl('http://fictional.redirector/redirect-to?url=//example.org/');
 
@@ -391,7 +391,6 @@ final class PhpBrowserTest extends TestsForBrowsers
         $this->assertArrayHasKey(CURLOPT_NOBODY, $config['curl']);
     }
 
-
     public function testCurlSslOptions(): void
     {
         $this->module->_setConfig([
@@ -419,7 +418,7 @@ final class PhpBrowserTest extends TestsForBrowsers
         $this->module->amOnPage('/auth');
         $this->module->seeResponseCodeIs(200);
         $this->module->dontSee('Unauthorized');
-        $this->module->see("Welcome, davert");
+        $this->module->see('Welcome, davert');
         $this->module->amHttpAuthenticated('', '');
         $this->module->amOnPage('/auth');
         $this->module->seeResponseCodeIs(401);
@@ -492,9 +491,9 @@ final class PhpBrowserTest extends TestsForBrowsers
                 'FooBar' => ['bar' => 'booze'],
                 'Food' => [
                     'beer' => [
-                        'yum' => ['yeah' => 'crunked']
-                    ]
-                ]
+                        'yum' => ['yeah' => 'crunked'],
+                    ],
+                ],
             ]
         );
         $data = data::get('form');

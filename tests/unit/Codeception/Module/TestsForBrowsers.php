@@ -51,7 +51,7 @@ abstract class TestsForBrowsers extends TestsForWeb
         $this->module->amOnPage('/relative_siteroot');
         $this->module->seeInCurrentUrl('/form/relative_siteroot');
         $this->module->submitForm('form', [
-            'test' => 'value'
+            'test' => 'value',
         ]);
         $this->module->dontSeeInCurrentUrl('form/form/');
         $this->module->amOnPage('relative_siteroot');

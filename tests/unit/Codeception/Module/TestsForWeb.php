@@ -44,7 +44,6 @@ abstract class TestsForWeb extends Unit
         $this->module->dontSeeInCurrentUrl('user');
     }
 
-
     public function testSee(): void
     {
         $this->module->amOnPage('/');
@@ -204,7 +203,7 @@ abstract class TestsForWeb extends Unit
     public function testClickByName(): void
     {
         $this->module->amOnPage('/form/button');
-        $this->module->click("btn0");
+        $this->module->click('btn0');
 
         $form = data::get('form');
         $this->assertEquals('val', $form['text']);
@@ -213,7 +212,7 @@ abstract class TestsForWeb extends Unit
     public function testClickByLinkTitle(): void
     {
         $this->module->amOnPage('/');
-        $this->module->click("Link Title");
+        $this->module->click('Link Title');
         $this->module->seeInCurrentUrl('/info');
     }
 
@@ -628,8 +627,8 @@ abstract class TestsForWeb extends Unit
             'select2' => [
                 'see test one',
                 'see test two',
-                'see test three'
-            ]
+                'see test three',
+            ],
         ];
         $this->module->seeInFormFields('form', $params);
     }
@@ -646,8 +645,8 @@ abstract class TestsForWeb extends Unit
             'select2' => [
                 'see test one',
                 'see test two',
-                'see test three'
-            ]
+                'see test three',
+            ],
         ];
         $this->module->seeInFormFields('form', $params);
     }
@@ -666,8 +665,8 @@ abstract class TestsForWeb extends Unit
             'select1' => 'not seen one',
             'select2' => [
                 'not seen one',
-                'No where to be seen'
-            ]
+                'No where to be seen',
+            ],
         ];
         $this->module->dontSeeInFormFields('form', $params);
     }
@@ -683,8 +682,8 @@ abstract class TestsForWeb extends Unit
             ],
             'select2' => [
                 'not seen one',
-                'No where to be seen'
-            ]
+                'No where to be seen',
+            ],
         ];
         $this->module->dontSeeInFormFields('form', $params);
     }
@@ -723,9 +722,9 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/');
         $result = $this->module->grabTextFrom('h1');
-        $this->assertEquals("Welcome to test app!", $result);
+        $this->assertEquals('Welcome to test app!', $result);
         $result = $this->module->grabTextFrom('descendant-or-self::h1');
-        $this->assertEquals("Welcome to test app!", $result);
+        $this->assertEquals('Welcome to test app!', $result);
         $result = $this->module->grabTextFrom('~Welcome to (\w+) app!~');
         $this->assertEquals('test', $result);
     }
@@ -734,9 +733,9 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/form/hidden');
         $result = $this->module->grabValueFrom('#action');
-        $this->assertEquals("kill_people", $result);
+        $this->assertEquals('kill_people', $result);
         $result = $this->module->grabValueFrom("descendant-or-self::form/descendant::input[@name='action']");
-        $this->assertEquals("kill_people", $result);
+        $this->assertEquals('kill_people', $result);
         $this->module->amOnPage('/form/textarea');
         $result = $this->module->grabValueFrom('#description');
         $this->assertEquals('sunrise', $result);
@@ -1065,7 +1064,7 @@ abstract class TestsForWeb extends Unit
         $this->module->amOnPage('/form/complex');
         $this->module->submitForm('form', [
                 'name' => 'Davert',
-                'description' => 'Is Codeception maintainer'
+                'description' => 'Is Codeception maintainer',
         ]);
         $form = data::get('form');
         $this->assertEquals('Davert', $form['name']);
@@ -1083,7 +1082,7 @@ abstract class TestsForWeb extends Unit
         $this->module->fillField('name', 'Kilgore Trout');
         $this->module->fillField('description', 'Is a fish');
         $this->module->submitForm('form', [
-            'description' => 'Is from Iliyum, NY'
+            'description' => 'Is from Iliyum, NY',
         ]);
         $form = data::get('form');
         $this->assertEquals('Kilgore Trout', $form['name']);
@@ -1094,7 +1093,7 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/form/empty');
         $this->module->submitForm('form', [
-                'text' => 'Hello!'
+                'text' => 'Hello!',
         ]);
         $form = data::get('form');
         $this->assertEquals('Hello!', $form['text']);
@@ -1125,8 +1124,8 @@ abstract class TestsForWeb extends Unit
         $this->module->submitForm('form', [
             'select' => [
                 'see test one',
-                'not seen four'
-            ]
+                'not seen four',
+            ],
         ]);
         $form = data::get('form');
         $this->assertCount(2, $form['select']);
@@ -1152,8 +1151,8 @@ abstract class TestsForWeb extends Unit
             'checkbox' => [
                 'not seen one',
                 'see test two',
-                'not seen three'
-            ]
+                'not seen three',
+            ],
         ]);
         $form = data::get('form');
         $this->assertCount(3, $form['checkbox']);
@@ -1169,8 +1168,8 @@ abstract class TestsForWeb extends Unit
             'checkbox' => [
                 true,
                 false,
-                true
-            ]
+                true,
+            ],
         ]);
         $form = data::get('form');
         $this->assertCount(2, $form['checkbox']);
@@ -1202,7 +1201,7 @@ abstract class TestsForWeb extends Unit
     public function testClickLinkWithInnerSpan(): void
     {
         $this->module->amOnPage('/form/example7');
-        $this->module->click("Buy Chocolate Bar");
+        $this->module->click('Buy Chocolate Bar');
         $this->module->seeCurrentUrlEquals('/');
     }
 
@@ -1240,8 +1239,8 @@ abstract class TestsForWeb extends Unit
     public function testSubmitFormWithTwoSubmitButtonsSubmitsCorrectValue(): void
     {
         $this->module->amOnPage('/form/example10');
-        $this->module->seeElement("#button2");
-        $this->module->click("#button2");
+        $this->module->seeElement('#button2');
+        $this->module->click('#button2');
 
         $form = data::get('form');
         $this->assertArrayHasKey('button2', $form);
@@ -1256,8 +1255,8 @@ abstract class TestsForWeb extends Unit
     public function testSubmitFormWithTwoSubmitButtonsSubmitsCorrectValueAfterFillField(): void
     {
         $this->module->amOnPage('/form/example10');
-        $this->module->fillField("username", "bob");
-        $this->module->click("#button2");
+        $this->module->fillField('username', 'bob');
+        $this->module->click('#button2');
 
         $form = data::get('form');
         $this->assertArrayHasKey('button2', $form);
@@ -1273,7 +1272,7 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/form/example12');
         $this->module->submitForm('form', [
-            'test' => 'value'
+            'test' => 'value',
         ]);
         $this->module->seeCurrentUrlEquals('/form/example11');
     }
@@ -1282,7 +1281,7 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/form/');
         $this->module->submitForm('form', [
-            'test' => 'value'
+            'test' => 'value',
         ]);
         $this->module->seeCurrentUrlEquals('/form/example11');
     }
@@ -1301,7 +1300,7 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/form/example16');
         $this->module->submitForm('form', [
-            'test' => 'value'
+            'test' => 'value',
         ]);
         $form = data::get('form');
         $this->assertArrayHasKey('checkbox1', $form, 'Checkbox value not sent');
@@ -1314,7 +1313,7 @@ abstract class TestsForWeb extends Unit
     {
         $this->module->amOnPage('/form/example16');
         $this->module->submitForm('form', [
-            'checkbox1' => true
+            'checkbox1' => true,
         ]);
         $form = data::get('form');
         $this->assertArrayHasKey('checkbox1', $form, 'Checkbox value not sent');
@@ -1322,7 +1321,7 @@ abstract class TestsForWeb extends Unit
 
         $this->module->amOnPage('/form/example16');
         $this->module->submitForm('form', [
-            'checkbox1' => false
+            'checkbox1' => false,
         ]);
         $form = data::get('form');
         $this->assertArrayNotHasKey('checkbox1', $form, 'Checkbox value sent');

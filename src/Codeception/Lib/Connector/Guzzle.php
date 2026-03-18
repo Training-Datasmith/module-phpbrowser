@@ -322,11 +322,11 @@ class Guzzle extends AbstractBrowser
                         $file = [
                             'name' => $name,
                             'contents' => $handle,
-                            'filename' => $filename
+                            'filename' => $filename,
                         ];
                         if (isset($info['type'])) {
                             $file['headers'] = [
-                                'content-type' => $info['type']
+                                'content-type' => $info['type'],
                             ];
                         }
 
@@ -338,7 +338,7 @@ class Guzzle extends AbstractBrowser
             } else {
                 $files[] = [
                     'name' => $name,
-                    'contents' => fopen($info, 'rb')
+                    'contents' => fopen($info, 'rb'),
                 ];
             }
         }

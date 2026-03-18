@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 include_once 'server.php';
 
 $GLOBALS['RESTmap'] = [];
@@ -11,7 +13,7 @@ $GLOBALS['RESTmap']['GET'] = [
             'email'   => 'davert@mail.ua',
             'aliases' => [
                 'DavertMik',
-                'davert.ua'
+                'davert.ua',
             ],
             'address' => [
                 'city'    => 'Kyiv',
@@ -25,7 +27,7 @@ $GLOBALS['RESTmap']['GET'] = [
             'data' => [
                 9,
                 0,
-                0
+                0,
             ],
         ];
     },
@@ -34,7 +36,7 @@ $GLOBALS['RESTmap']['GET'] = [
             return 'foo: "' . $_SERVER['HTTP_FOO'] . '"';
         }
         return 'foo: not found';
-    }
+    },
 
 ];
 
@@ -52,7 +54,7 @@ $GLOBALS['RESTmap']['POST'] = [
         return [
             'body' => $_POST,
         ];
-    }
+    },
 ];
 
 $GLOBALS['RESTmap']['PUT'] = [
@@ -61,13 +63,13 @@ $GLOBALS['RESTmap']['PUT'] = [
         $user = ['name' => 'davert', 'email' => 'davert@mail.ua'];
         $user['name'] = $name;
         return $user;
-    }
+    },
 ];
 
 $GLOBALS['RESTmap']['DELETE'] = [
     'user' => function () {
         header('error', false, 404);
-    }
+    },
 ];
 
 RESTServer();

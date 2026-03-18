@@ -5,9 +5,9 @@ declare(strict_types=1);
 use Codeception\Lib\ModuleContainer;
 use Codeception\Module\PhpBrowser;
 use Codeception\Module\REST;
+use Codeception\Stub;
 use Codeception\Test\Cest;
 use Codeception\Test\Unit;
-use Codeception\Stub;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\BrowserKit\Request as SymfonyRequest;
@@ -235,7 +235,7 @@ final class PhpBrowserRestTest extends Unit
                 0,
                 0,
                 0,
-            ]
+            ],
         ]);
     }
 
@@ -262,7 +262,7 @@ final class PhpBrowserRestTest extends Unit
                 'type' => 'text/plain',
                 'size' => 9,
                 'tmp_name' => $tmpFileName,
-            ]
+            ],
         ];
         $this->rest->sendPOST('/rest/file-upload', [], $files);
         $this->rest->seeResponseContainsJson([
@@ -278,7 +278,7 @@ final class PhpBrowserRestTest extends Unit
             'users' => [
                 ['id' => 0, 'name' => 'John Doe'],
                 ['id' => 1, 'name' => 'Jane Doe'],
-            ]
+            ],
         ];
         $files = [
             'file' => [
@@ -286,7 +286,7 @@ final class PhpBrowserRestTest extends Unit
                 'type' => 'text/plain',
                 'size' => 9,
                 'tmp_name' => $tmpFileName,
-            ]
+            ],
         ];
         $this->rest->sendPOST('/rest/multipart-collections', $body, $files);
         $this->rest->seeResponseEquals(json_encode([
