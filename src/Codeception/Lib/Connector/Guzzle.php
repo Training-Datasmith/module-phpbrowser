@@ -118,7 +118,7 @@ class Guzzle extends AbstractBrowser
             $contentType = 'text/html';
         }
 
-        if (str_contains($contentType, 'charset=') === false) {
+        if (str_contains((string) $contentType, 'charset=') === false) {
             if (preg_match('#<meta[^>]+charset *= *["\']?([a-zA-Z\-0-9]+)#i', $body, $matches)) {
                 $contentType .= ';charset=' . $matches[1];
             }
@@ -166,7 +166,7 @@ class Guzzle extends AbstractBrowser
             if (str_starts_with($uri, '/')) {
                 $baseUriPath = $baseUri->getPath();
                 if (!empty($baseUriPath) && str_starts_with($uri, (string) $baseUriPath)) {
-                    $uri = substr($uri, strlen($baseUriPath));
+                    $uri = substr($uri, strlen((string) $baseUriPath));
                 }
 
                 return Uri::appendPath((string)$baseUri, $uri);
@@ -230,7 +230,7 @@ class Guzzle extends AbstractBrowser
 
         $contentHeaders = ['Content-Length' => true, 'Content-Md5' => true, 'Content-Type' => true];
         foreach ($server as $header => $val) {
-            $header = html_entity_decode(implode('-', array_map('ucfirst', explode('-', strtolower(str_replace('_', '-', $header))))), ENT_NOQUOTES);
+            $header = html_entity_decode(implode('-', array_map(ucfirst(...), explode('-', strtolower(str_replace('_', '-', $header))))), ENT_NOQUOTES);
             if (str_starts_with($header, 'Http-')) {
                 $headers[substr($header, 5)] = $val;
             } elseif (isset($contentHeaders[$header])) {

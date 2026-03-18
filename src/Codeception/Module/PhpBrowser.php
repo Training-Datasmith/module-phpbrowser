@@ -115,19 +115,16 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
         'connect_timeout'
     ];
 
-    /**
-     * @var Guzzle
-     */
     public ?AbstractBrowser $client = null;
 
     public ?GuzzleClient $guzzle = null;
 
-    public function _initialize()
+    public function _initialize(): void
     {
         $this->_initializeSession();
     }
 
-    public function _before(TestInterface $test)
+    public function _before(TestInterface $test): void
     {
         if (!$this->client instanceof AbstractBrowser) {
             $this->client = new Guzzle();
@@ -174,7 +171,7 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
     public function amOnSubdomain(string $subdomain): void
     {
         $url = $this->config['url'];
-        $url = preg_replace('#(https?://)(.*\.)(.*\.)#', "$1$3", $url); // removing current subdomain
+        $url = preg_replace('#(https?://)(.*\.)(.*\.)#', "$1$3", (string) $url); // removing current subdomain
         $url = preg_replace('#(https?://)(.*)#', sprintf('$1%s.$2', $subdomain), $url);
          // inserting new
         $config = $this->config;
