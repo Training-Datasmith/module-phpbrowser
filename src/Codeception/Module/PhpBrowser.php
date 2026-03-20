@@ -1,19 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Codeception\Module;
 
 use Closure;
 use Codeception\Lib\Connector\Guzzle;
-use Codeception\Lib\InnerBrowser;
-use Codeception\Lib\Interfaces\MultiSession;
+use Codeception\Lib\Inner_Browser;
+use Codeception\Lib\Interfaces\Multi_Session;
 use Codeception\Lib\Interfaces\Remote;
-use Codeception\TestInterface;
+use Codeception\Test_Interface;
 use Codeception\Util\Uri;
-use GuzzleHttp\Client as GuzzleClient;
-use Symfony\Component\BrowserKit\AbstractBrowser;
-
+use Guzzle_Http\Client as GuzzleClient;
+use Symfony\Component\Browser_Kit\Abstract_Browser;
 /**
  * Uses [Guzzle](https://docs.guzzlephp.org/en/stable/) to interact with your application over CURL.
  * Module works over CURL and requires **PHP CURL extension** to be enabled.
@@ -72,13 +70,12 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
  * * `client` - Symfony BrowserKit instance.
  *
  */
-class PhpBrowser extends InnerBrowser implements Remote, MultiSession
+class Php_Browser extends Inner_Browser implements Remote, Multi_Session
 {
     /**
      * @var string[]
      */
-    protected array $requiredFields = ['url'];
-
+    protected array $required_fields = ['url'];
     /**
      * @var array<string, mixed>
      */
@@ -91,71 +88,48 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
         'refresh_max_interval' => 10,
         'handler' => 'curl',
         'middleware' => null,
-
         // required defaults (not recommended to change)
         'allow_redirects' => false,
         'http_errors' => false,
         'cookies' => true,
     ];
-
     /**
      * @var string[]
      */
-    protected array $guzzleConfigFields = [
-        'auth',
-        'proxy',
-        'verify',
-        'cert',
-        'query',
-        'ssl_key',
-        'proxy',
-        'expect',
-        'version',
-        'timeout',
-        'connect_timeout',
-    ];
-
-    public ?AbstractBrowser $client = null;
-
-    public ?GuzzleClient $guzzle = null;
-
+    protected array $guzzle_config_fields = ['auth', 'proxy', 'verify', 'cert', 'query', 'ssl_key', 'proxy', 'expect', 'version', 'timeout', 'connect_timeout'];
+    public ?Abstract_Browser $client = null;
+    public ?Guzzle_Client $guzzle = null;
     public function _initialize(): void
     {
-        $this->_initializeSession();
+        $this->_initialize_session();
     }
-
-    public function _before(TestInterface $test): void
+    public function _before(Test_Interface $test): void
     {
-        if (!$this->client instanceof AbstractBrowser) {
+        if (!$this->client instanceof Abstract_Browser) {
             $this->client = new Guzzle();
         }
-
-        $this->_prepareSession();
+        $this->_prepare_session();
     }
-
-    public function _getUrl()
+    public function _get_url()
     {
         return $this->config['url'];
     }
-
     /**
      * Alias to `haveHttpHeader`
      */
-    public function setHeader(string $name, string $value): void
+    public function set_header(string $name, string $value): void
     {
-        $this->haveHttpHeader($name, $value);
+        $this->have_http_header($name, $value);
     }
-
-    public function amHttpAuthenticated(string $username, string $password): void
+    public function am_http_authenticated(string $username, string $password): void
     {
         if ($this->client instanceof Guzzle) {
-            $this->client->setAuth($username, $password);
+            $this->client->set_auth($username, $password);
         }
     }
-
-    public function amOnUrl(string $url): void
+    public function am_on_url(string $url): void
     {
-        $host = Uri::retrieveHost($url);
+        $host = Uri::retrieve_host($url);
         $config = $this->config;
         $config['url'] = $host;
         $this->_reconfigure($config);
@@ -163,27 +137,24 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
         if ($page === '') {
             $page = '/';
         }
-
-        $this->debugSection('Host', $host);
-        $this->amOnPage($page);
+        $this->debug_section('Host', $host);
+        $this->am_on_page($page);
     }
-
-    public function amOnSubdomain(string $subdomain): void
+    public function am_on_subdomain(string $subdomain): void
     {
         $url = $this->config['url'];
-        $url = preg_replace('#(https?://)(.*\.)(.*\.)#', '$1$3', (string) $url); // removing current subdomain
+        $url = preg_replace('#(https?://)(.*\.)(.*\.)#', '$1$3', (string) $url);
+        // removing current subdomain
         $url = preg_replace('#(https?://)(.*)#', sprintf('$1%s.$2', $subdomain), $url);
         // inserting new
         $config = $this->config;
         $config['url'] = $url;
         $this->_reconfigure($config);
     }
-
-    protected function onReconfigure()
+    protected function on_reconfigure()
     {
-        $this->_prepareSession();
+        $this->_prepare_session();
     }
-
     /**
      * Low-level API method.
      * If Codeception commands are not enough, use [Guzzle HTTP Client](https://guzzlephp.org/) methods directly
@@ -200,80 +171,64 @@ class PhpBrowser extends InnerBrowser implements Remote, MultiSession
      * It is not recommended to use this command on a regular basis.
      * If Codeception lacks important Guzzle Client methods, implement them and submit patches.
      */
-    public function executeInGuzzle(Closure $function): mixed
+    public function execute_in_guzzle(Closure $function): mixed
     {
         return $function($this->guzzle);
     }
-
-    public function _getResponseCode(): int|string
+    public function _get_response_code(): int|string
     {
-        return $this->getResponseStatusCode();
+        return $this->get_response_status_code();
     }
-
-    public function _initializeSession(): void
+    public function _initialize_session(): void
     {
         // independent sessions need independent cookies
         $this->client = new Guzzle();
-        $this->_prepareSession();
+        $this->_prepare_session();
     }
-
-    public function _prepareSession(): void
+    public function _prepare_session(): void
     {
-        $defaults = array_intersect_key($this->config, array_flip($this->guzzleConfigFields));
-        $curlOptions = [];
-
+        $defaults = array_intersect_key($this->config, array_flip($this->guzzle_config_fields));
+        $curl_options = [];
         foreach ($this->config['curl'] as $key => $val) {
             if (defined($key)) {
-                $curlOptions[constant($key)] = $val;
+                $curl_options[constant($key)] = $val;
             }
         }
-
         $this->headers = $this->config['headers'];
-        $this->setCookiesFromOptions();
-
+        $this->set_cookies_from_options();
         $defaults['base_uri'] = $this->config['url'];
-        $defaults['curl'] = $curlOptions;
-        $handlerStack = Guzzle::createHandler($this->config['handler']);
+        $defaults['curl'] = $curl_options;
+        $handler_stack = Guzzle::create_handler($this->config['handler']);
         if (is_array($this->config['middleware'])) {
             foreach ($this->config['middleware'] as $middleware) {
-                $handlerStack->push($middleware);
+                $handler_stack->push($middleware);
             }
         }
-
-        $defaults['handler'] = $handlerStack;
-        $this->guzzle = new GuzzleClient($defaults);
-
-        $this->client->setRefreshMaxInterval($this->config['refresh_max_interval']);
-        $this->client->setClient($this->guzzle);
+        $defaults['handler'] = $handler_stack;
+        $this->guzzle = new Guzzle_Client($defaults);
+        $this->client->set_refresh_max_interval($this->config['refresh_max_interval']);
+        $this->client->set_client($this->guzzle);
     }
-
     /**
      * @return array<string, mixed>
      */
-    public function _backupSession()
+    public function _backup_session()
     {
-        return [
-            'client' => $this->client,
-            'guzzle' => $this->guzzle,
-            'crawler' => $this->crawler,
-            'headers' => $this->headers,
-        ];
+        return ['client' => $this->client, 'guzzle' => $this->guzzle, 'crawler' => $this->crawler, 'headers' => $this->headers];
     }
-
     /**
      * @param array<string, mixed> $session
      */
-    public function _loadSession($session): void
+    public function _load_session($session): void
     {
         foreach ($session as $key => $val) {
-            $this->$key = $val;
+            $this->{$key} = $val;
         }
     }
-
     /**
      * @param ?array<string, mixed> $session
      */
-    public function _closeSession($session = null): void
+    public function _close_session($session = null): void
     {
         unset($session);
     }
