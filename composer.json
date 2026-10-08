@@ -1,6 +1,5 @@
 {
     "name": "codeception/module-phpbrowser",
-    "version": "3.0.0",
     "description": "Codeception module for testing web application over HTTP",
     "license": "MIT",
     "type": "library",
