@@ -145,11 +145,12 @@ class Guzzle extends AbstractBrowser
                 );
             }
 
-            if ((!empty($matches)) && (empty($matches[1]) || $matches[1] < $this->refreshMaxInterval)) {
+            $interval = $matches[1] ?? '';
+            if ($matches !== [] && ($interval === '' || (int) $interval < $this->refreshMaxInterval)) {
                 $uri = new Psr7Uri($this->getAbsoluteUri($matches[2]));
                 $currentUri = new Psr7Uri($this->getHistory()->current()->getUri());
 
-                if ($uri->withFragment('') !== $currentUri->withFragment('')) {
+                if ((string) $uri->withFragment('') !== (string) $currentUri->withFragment('')) {
                     $status = 302;
                     $headers['Location'] = $matchesMeta ? htmlspecialchars_decode((string) $uri) : (string)$uri;
                 }
@@ -165,8 +166,13 @@ class Guzzle extends AbstractBrowser
         if (str_contains($uri, '://') === false && !str_starts_with($uri, '//')) {
             if (str_starts_with($uri, '/')) {
                 $baseUriPath = $baseUri->getPath();
-                if (!empty($baseUriPath) && str_starts_with($uri, (string) $baseUriPath)) {
-                    $uri = substr($uri, strlen($baseUriPath));
+                $basePath = (string) $baseUriPath;
+                if ($basePath !== '' && $basePath !== '/') {
+                    if ($uri === $basePath) {
+                        $uri = '/';
+                    } elseif (str_starts_with($uri, rtrim($basePath, '/') . '/')) {
+                        $uri = substr($uri, strlen(rtrim($basePath, '/')));
+                    }
                 }
 
                 return Uri::appendPath((string)$baseUri, $uri);

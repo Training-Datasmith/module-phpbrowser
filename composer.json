@@ -1,5 +1,6 @@
 {
     "name": "codeception/module-phpbrowser",
+    "version": "3.0.0",
     "description": "Codeception module for testing web application over HTTP",
     "license": "MIT",
     "type": "library",
@@ -30,7 +31,8 @@
         "squizlabs/php_codesniffer": "^3.10",
         "phpstan/phpstan": "^1.10",
         "aws/aws-sdk-php": "^3.199",
-        "codeception/module-rest": "^2.0 | *@dev"
+        "codeception/module-rest": "^3.4",
+        "phpunit/phpunit": "^11.5"
     },
     "conflict": {
         "codeception/codeception": "<5.0",
